@@ -2,6 +2,13 @@ PHP Refactoring Support for VIM
 ===============================
 
 PHP Refactoring support for VIM using [php-refactorings-browser https://github.com/QafooLabs/php-refactoring-browser]
+Modified to support refactoring within vims buffer instead of the previous method
+of patching the file directly and reloading vim. 
+This allows the following advantages:
+* Refactoring modified buffers without being forced to save them first.
+* Undoing/Redoing refactors.
+* Viewing the refactored changes before saving them to disk.
+* An all around more seamless feel.
 
 Installation
 ------------
