@@ -1,5 +1,5 @@
 if !exists("g:php_refactor_patch_command")
-    let g:php_refactor_patch_command='patch -p1 --silent --input - --output -'
+    let g:php_refactor_patch_command='patch --silent --input - --output - --dir="/tmp"'
 endif
 
 func! PhpRefactorShowMenu() range
@@ -13,7 +13,7 @@ func! PhpRefactorShowMenu() range
     echo ''
     echo '(c) Cancel'
     echo ''
-    
+
     let choice = nr2char(getchar())
     if choice == 'c'
         return
@@ -73,13 +73,13 @@ func! PhpRefactorRunCommand(refactoring, args)
     endif
 
     let command = ':%!' . g:php_refactor_command
-        \ . ' ' . a:refactoring . ' %'
+        \ . ' ' . a:refactoring . ' -'
 
     for arg in a:args
         let command = command . ' ' . arg
     endfor
 
-    exec command .' | '.g:php_refactor_patch_command
-
+    exec command . ' | ' . g:php_refactor_patch_command
     exec ':redraw!'
+    echo command . ' | ' . g:php_refactor_patch_command
 endfunc

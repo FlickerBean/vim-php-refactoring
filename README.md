@@ -10,6 +10,9 @@ This allows the following advantages:
 * Viewing the refactored changes before saving them to disk.
 * An all around more seamless feel.
 
+This version requires a custom refactor.phar, that allows support for stdin which 
+can be gotten from my fork of https://github.com/FlickerBean/php-refactoring-browser
+
 Installation
 ------------
 
@@ -21,7 +24,7 @@ Add `Bundle 'vim-php/vim-php-refactoring'` to your `.vimrc` file and then:
 ### Configuring
 
 You also need to Download `refactor.phar` from
-https://github.com/QafooLabs/php-refactoring-browser and add
+https://github.com/FlickerBean/php-refactoring-browser and add
 
 `let g:php_refactor_command='php /path/to/refactor.phar'`
 
