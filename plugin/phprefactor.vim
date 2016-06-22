@@ -1,5 +1,5 @@
 if !exists("g:php_refactor_patch_command")
-    let g:php_refactor_patch_command='patch -p1'
+    let g:php_refactor_patch_command='patch -p1 --silent --input - --output -'
 endif
 
 func! PhpRefactorShowMenu() range
@@ -32,12 +32,6 @@ func! PhpRefactorShowMenu() range
 endfunc
 
 func! PhpRefactorExtractMethod(startline, endline)
-    " check the file has been saved
-    if &modified
-        echom 'Cannot refactor; file contains unsaved changes'
-        return
-    endif
-
     let method = input('Enter extracted method name: ')
 
     let range = a:startline . '-' . a:endline
@@ -50,12 +44,6 @@ func! PhpRefactorExtractMethod(startline, endline)
 endfunc
 
 func! PhpRefactorLocalVariableToInstanceVariable()
-    " check the file has been saved
-    if &modified
-        echom 'Cannot refactor; file contains unsaved changes'
-        return
-    endif
-
     let variable = expand('<cword>')
     let lineNo = line('.')
 
@@ -65,12 +53,6 @@ func! PhpRefactorLocalVariableToInstanceVariable()
 endfunc
 
 func! PhpRefactorRenameLocalVariable()
-    " check the file has been saved
-    if &modified
-        echom 'Cannot refactor; file contains unsaved changes'
-        return
-    endif
-
     let oldName = expand('<cword>')
     let lineNo = line('.')
     let newName = input('Enter new variable name: ')
@@ -81,12 +63,6 @@ func! PhpRefactorRenameLocalVariable()
 endfunc
 
 func! PhpRefactorOptimizeUse()
-    " check the file has been saved
-    if &modified
-        echom 'Cannot refactor; file contains unsaved changes'
-        return
-    endif
-
     call PhpRefactorRunCommand('optimize-use', [])
 endfunc
 
@@ -96,10 +72,7 @@ func! PhpRefactorRunCommand(refactoring, args)
         return
     endif
 
-    " Enable autoread to stop prompting for reload
-    setlocal autoread
-
-    let command = ':!' . g:php_refactor_command
+    let command = ':%!' . g:php_refactor_command
         \ . ' ' . a:refactoring . ' %'
 
     for arg in a:args
@@ -107,8 +80,6 @@ func! PhpRefactorRunCommand(refactoring, args)
     endfor
 
     exec command .' | '.g:php_refactor_patch_command
-
-    setlocal noautoread
 
     exec ':redraw!'
 endfunc
