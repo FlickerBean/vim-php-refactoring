@@ -44,7 +44,11 @@ func! PhpRefactorExtractMethod(startline, endline)
 endfunc
 
 func! PhpRefactorLocalVariableToInstanceVariable()
+    set iskeywordOptionOld = &iskeyword
+    set iskeyword-=$
     let variable = expand('<cword>')
+    set iskeyword = iskeywordOptionOld
+
     let lineNo = line('.')
 
     let args = [lineNo, variable]
