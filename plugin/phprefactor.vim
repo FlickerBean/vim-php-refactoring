@@ -44,7 +44,8 @@ func! PhpRefactorExtractMethod(startline, endline)
 endfunc
 
 func! PhpRefactorLocalVariableToInstanceVariable()
-    let variable = expand('<cword>')
+    let variable = <SID>GetVariableNameUnderCursor()
+
     let lineNo = line('.')
 
     let args = [lineNo, variable]
@@ -53,7 +54,7 @@ func! PhpRefactorLocalVariableToInstanceVariable()
 endfunc
 
 func! PhpRefactorRenameLocalVariable()
-    let oldName = expand('<cword>')
+    let oldName = <SID>GetVariableNameUnderCursor()
     let lineNo = line('.')
     let newName = input('Enter new variable name: ')
 
@@ -82,4 +83,15 @@ func! PhpRefactorRunCommand(refactoring, args)
     exec command . ' | ' . g:php_refactor_patch_command
     exec ':redraw!'
     echo command . ' | ' . g:php_refactor_patch_command
+endfunc
+
+func! s:GetVariableNameUnderCursor()
+    let iskeywordOptionOld = &iskeyword
+    set iskeyword=a-z,A-Z,48-57,_
+
+    let variableName = expand('<cword>')
+
+    let &iskeyword = iskeywordOptionOld
+
+    return variableName
 endfunc
